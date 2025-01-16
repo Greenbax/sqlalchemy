@@ -1559,6 +1559,9 @@ class Session(_SessionClassMethods):
         assert self._transaction is None
         assert self.autocommit
         conn = engine.connect(**kw)
+        dbapi_conn = conn.connection
+        if not dbapi_conn.autocommit and hasattr(dbapi_conn, "set_session"):
+            dbapi_conn.set_session(autocommit=True)
         if execution_options:
             conn = conn.execution_options(**execution_options)
         return conn
