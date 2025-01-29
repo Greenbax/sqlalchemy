@@ -1564,6 +1564,8 @@ class Session(_SessionClassMethods):
             hasattr(dbapi_conn, "autocommit")
             and not dbapi_conn.autocommit
             and hasattr(dbapi_conn, "set_session")
+            # We can only call set_session outside of a transaction.
+            and dbapi_conn.status == 1  # psycopg2.extensions.STATUS_READY
         ):
             dbapi_conn.set_session(autocommit=True)
         if execution_options:
