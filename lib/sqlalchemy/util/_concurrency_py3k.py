@@ -46,6 +46,11 @@ class _AsyncIoGreenlet(greenlet.greenlet):
             self.gr_context = driver.gr_context
 
 
+def in_greenlet() -> bool:
+    current = greenlet.getcurrent()
+    return isinstance(current, _AsyncIoGreenlet)
+
+
 def await_only(awaitable: Coroutine) -> Any:
     """Awaits an async function in a sync method.
 

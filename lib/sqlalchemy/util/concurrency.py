@@ -17,6 +17,7 @@ if compat.py3k:
         greenlet_error = str(e)
     else:
         have_greenlet = True
+        from ._concurrency_py3k import in_greenlet
         from ._concurrency_py3k import await_only
         from ._concurrency_py3k import await_fallback
         from ._concurrency_py3k import greenlet_spawn
@@ -53,6 +54,9 @@ if not have_greenlet:
 
     def is_exit_exception(e):  # noqa: F811
         return not isinstance(e, Exception)
+
+    def in_greenlet():  # noqa: F811
+        _not_implemented()
 
     def await_only(thing):  # noqa: F811
         _not_implemented()
